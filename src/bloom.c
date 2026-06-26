@@ -1,11 +1,4 @@
-typedef struct {
-    unsigned char *bits;
-    int m;
-    int k;
-    long consultas;
-    long consultasEvitadas;
-    long falsosPositivos;
-} BloomFilter;
+#include "bloom.h"
 
 // Função hash 1
 unsigned int hash1(char *str)
