@@ -1,4 +1,4 @@
-#include "bloom.h"
+#include "../includes/bloom.h"
 
 // Função hash 1
 unsigned int hash1(char *str)
@@ -93,3 +93,4 @@ double taxaFalsoPositivo(BloomFilter *bf)
         (100.0*bf->falsosPositivos)/
         bf->consultas;
 }
+
