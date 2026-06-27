@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-#include "../includes/bloom.h"
-=======
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "bloom.h"
->>>>>>> cb8880c8769ebc2d4b76e0075a1af78b3999b519
+#include "../includes/bloom.h"
 
 
 /* Função hash 1 */
@@ -160,7 +155,6 @@ void liberarBloom(BloomFilter *bf)
     free(bf->bits);
 
     free(bf);
-<<<<<<< HEAD
 }
 
 int consultarSistema(BloomFilter *bf, Hash *hash, char *usuario){
@@ -190,7 +184,3 @@ double taxaFalsoPositivo(BloomFilter *bf)
         (100.0*bf->falsosPositivos)/
         bf->consultas;
 }
-
-=======
-}
->>>>>>> cb8880c8769ebc2d4b76e0075a1af78b3999b519
