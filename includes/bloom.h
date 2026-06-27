@@ -1,27 +1,40 @@
 #ifndef BLOOM_H
 #define BLOOM_H
 
-#include "hash.h"
+typedef struct{
 
-typedef struct {
     unsigned char *bits;
-    int m;
-    int k;
+
+    int tamanhoVetor;
+
+    int quantidadeHashes;
+
     long consultas;
+
     long consultasEvitadas;
+
     long falsosPositivos;
+
 } BloomFilter;
 
-BloomFilter* criarBloom(int m, int k);
 
-void inserirBloom(BloomFilter *bf, char *str);
+/* Cria o Bloom */
+BloomFilter* criarBloom(int tamanhoVetor, int quantidadeHashes);
 
-int consultarBloom(BloomFilter *bf, char *str);
 
-void liberarBloom(BloomFilter *bf);
+/* Inserir usuário no filtro de Bloom */
+void inserirBloom(BloomFilter *bf, char *usuario);
 
-int consultarSistema(BloomFilter *bf, Hash *hash, char *usuario);
 
+/* Consulta um usuário no filtro de Bloom */
+int consultarBloom(BloomFilter *bf, char *usuario);
+
+
+/* Calcular a taxa de falsos positivos */
 double taxaFalsoPositivo(BloomFilter *bf);
+
+
+/* Liberar memória */
+void liberarBloom(BloomFilter *bf);
 
 #endif
