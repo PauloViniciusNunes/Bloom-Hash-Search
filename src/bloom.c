@@ -1,186 +1,170 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "../includes/bloom.h"
 
 
-/* Função hash 1 */
-unsigned int hash1(char *texto)
+/* ---------------- HASHES ---------------- */
+
+unsigned int hash1(char *nome)
 {
     unsigned int hash = 5381;
 
-    while(*texto)
+    while(*nome)
     {
-        hash = ((hash << 5) + hash) + *texto;
-        texto++;
+        hash = ((hash << 5) + hash) + (unsigned char)*nome;
+        nome++;
     }
 
     return hash;
 }
 
 
-/* Função hash 2 */
-unsigned int hash2(char *texto)
+unsigned int hash2(char *nome)
 {
     unsigned int hash = 0;
 
-    while(*texto)
+    while(*nome)
     {
-        hash = hash * 131 + *texto;
-        texto++;
+        hash = hash * 131 + (unsigned char)*nome;
+        nome++;
     }
 
     return hash;
 }
 
 
-/* Gera a posição que será utilizada no vetor */
-unsigned int calcularPosicao(char *texto, int numeroHash, int tamanhoVetor)
+/* Calcula uma posição do vetor usando Double Hashing */
+
+unsigned int calcularPosicao(char *nome, int numeroHash, int tamanho)
 {
-    unsigned int h1 = hash1(texto);
+    unsigned int h1 = hash1(nome);
+    unsigned int h2 = hash2(nome);
 
-    unsigned int h2 = hash2(texto);
-
-    return (h1 + numeroHash * h2) % tamanhoVetor;
+    return (h1 + numeroHash * h2) % tamanho;
 }
 
 
-/* Liga um bit do vetor */
-void ligarBit(BloomFilter *bf, int posicao)
+/* ---------------- BITS ---------------- */
+
+
+/* Liga um bit */
+
+void ligarBit(BloomFilter *bloom, int posicao)
 {
     int byte = posicao / 8;
 
     int bit = posicao % 8;
 
-    bf->bits[byte] |= (1 << bit);
+    bloom->bits[byte] |= (1 << bit);
 }
 
 
 /* Verifica se um bit está ligado */
-int verificarBit(BloomFilter *bf, int posicao)
+
+bool bitLigado(BloomFilter *bloom, int posicao)
 {
     int byte = posicao / 8;
 
     int bit = posicao % 8;
 
-    return bf->bits[byte] & (1 << bit);
+    return (bloom->bits[byte] & (1 << bit));
 }
 
 
-/* Inicializa todas as estatísticas */
-void inicializarEstatisticas(BloomFilter *bf)
+/* ---------------- BLOOM ---------------- */
+
+
+BloomFilter* criarBloom(int tamanho, int numHashes)
 {
-    bf->consultas = 0;
+    BloomFilter *bloom =
+        malloc(sizeof(BloomFilter));
 
-    bf->consultasEvitadas = 0;
+    if(bloom == NULL)
+        return NULL;
 
-    bf->falsosPositivos = 0;
+    bloom->tamanho = tamanho;
+    bloom->numHashes = numHashes;
+
+    bloom->bits =
+        calloc((tamanho + 7) / 8, sizeof(unsigned char));
+
+    if(bloom->bits == NULL)
+    {
+        free(bloom);
+        return NULL;
+    }
+
+    bloom->totalConsultas = 0;
+    bloom->consultasIgnoradas = 0;
+    bloom->falsosPositivos = 0;
+
+    return bloom;
 }
 
 
-/* Cria o Bloom */
-BloomFilter* criarBloom(int tamanhoVetor, int quantidadeHashes)
+/* Insere um nome */
+
+void inserirBloom(char *nome, BloomFilter *bloom)
 {
-    BloomFilter *bf;
-
-    bf = malloc(sizeof(BloomFilter));
-
-    bf->tamanhoVetor = tamanhoVetor;
-
-    bf->quantidadeHashes = quantidadeHashes;
-
-    bf->bits = calloc((tamanhoVetor + 7) / 8, sizeof(unsigned char));
-
-    inicializarEstatisticas(bf);
-
-    return bf;
-}
-
-
-/* Insere um usuário */
-void inserirBloom(BloomFilter *bf, char *usuario)
-{
-    int i;
-
-    for(i = 0; i < bf->quantidadeHashes; i++)
+    for(int i=0; i<bloom->numHashes; i++)
     {
         int posicao;
 
-        posicao = calcularPosicao(usuario, i, bf->tamanhoVetor);
+        posicao =
+            calcularPosicao(nome, i, bloom->tamanho);
 
-        ligarBit(bf, posicao);
+        ligarBit(bloom, posicao);
     }
 }
 
 
-/* Consulta um usuário */
-int consultarBloom(BloomFilter *bf, char *usuario)
+/* Consulta */
+
+bool buscarBloom(char *nome, BloomFilter *bloom)
 {
-    int i;
+    bloom->totalConsultas++;
 
-    bf->consultas++;
-
-    for(i = 0; i < bf->quantidadeHashes; i++)
+    for(int i=0; i<bloom->numHashes; i++)
     {
         int posicao;
 
-        posicao = calcularPosicao(usuario, i, bf->tamanhoVetor);
+        posicao =
+            calcularPosicao(nome, i, bloom->tamanho);
 
-        if(!verificarBit(bf, posicao))
+        if(!bitLigado(bloom, posicao))
         {
-            bf->consultasEvitadas++;
+            bloom->consultasIgnoradas++;
 
-            return 0;
+            return false;
         }
     }
 
-    return 1;
+    return true;
+}
+
+
+/* Utilizada quando o Hash disser que o elemento não existe */
+
+void registrarFalsoPositivo(BloomFilter *bloom)
+{
+    bloom->falsosPositivos++;
 }
 
 
 /* Calcula a taxa de falsos positivos */
-double taxaFalsoPositivo(BloomFilter *bf)
+
+double taxaFalsoPositivo(BloomFilter *bloom)
 {
-    if(bf->consultas == 0)
+    if(bloom->totalConsultas == 0)
         return 0;
 
-    return (100.0 * bf->falsosPositivos) /
-            bf->consultas;
+    return (100.0 * bloom->falsosPositivos)/ bloom->totalConsultas;
 }
 
 
-/* Libera memória */
-void liberarBloom(BloomFilter *bf)
+/* Liberação de memória */
+
+void destruirBloom(BloomFilter *bloom)
 {
-    free(bf->bits);
+    free(bloom->bits);
 
-    free(bf);
-}
-
-int consultarSistema(BloomFilter *bf, Hash *hash, char *usuario){
-    bf->consultas++;
-
-    if(!consultarBloom(bf,usuario))
-    {
-        bf->consultasEvitadas++;
-
-        return 0;
-    }
-
-    if(buscarHash(hash,usuario))
-        return 1;
-
-    bf->falsosPositivos++;
-
-    return 0;
-}
-
-double taxaFalsoPositivo(BloomFilter *bf)
-{
-    if(bf->consultas==0)
-        return 0;
-
-    return
-        (100.0*bf->falsosPositivos)/
-        bf->consultas;
+    free(bloom);
 }
