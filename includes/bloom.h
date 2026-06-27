@@ -10,7 +10,7 @@ typedef struct BloomFilter
     unsigned char *bits;
 
     int tamanho;
-    int numHashes;
+    int quantidadeHashes;
 
     long totalConsultas;
     long consultasIgnoradas;
@@ -19,18 +19,23 @@ typedef struct BloomFilter
 } BloomFilter;
 
 
-/* Criação e destruição */
-BloomFilter* criarBloom(int tamanho, int numHashes);
-void destruirBloom(BloomFilter *bloom);
+/* Funções Hash */
+unsigned int hash1(char *nome);
+unsigned int hash2(char *nome);
+unsigned int gerarHash(char *nome, int numeroHash, int tamanho);
 
 
-/* Inserção e consulta */
-void inserirBloom(char *nome, BloomFilter *bloom);
-bool buscarBloom(char *nome, BloomFilter *bloom);
+/* Bloom Filter */
+BloomFilter *criarBloom(int tamanho, int quantidadeHashes);
 
+void inserirBloom(BloomFilter *bloom, char *nome);
 
-/* Estatísticas */
+bool consultarBloom(BloomFilter *bloom, char *nome);
+
 void registrarFalsoPositivo(BloomFilter *bloom);
+
 double taxaFalsoPositivo(BloomFilter *bloom);
+
+void liberarBloom(BloomFilter *bloom);
 
 #endif
