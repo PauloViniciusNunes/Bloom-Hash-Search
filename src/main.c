@@ -41,6 +41,10 @@ int main() {
                     inserirUsuario(usuario, tabela);
                     inserirBloom(filtro, usuario);
                     fprintf(file, "%s\n", usuario);
+                } else if(!buscarUsuario(usuario, tabela)) {
+                    inserirUsuario(usuario, tabela);
+                    inserirBloom(filtro, usuario);
+                    fprintf(file, "%s\n", usuario);
                 } else {
                     printf("Usuario ja cadastrado!\n");
                 }
