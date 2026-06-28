@@ -29,7 +29,7 @@ int main() {
     hashTable *tabela = criarHash();
     char usuario[20];
     while(fscanf(file, "%s", usuario)) {
-        inserirUsuario(usuario, tabela);
+        inserirUsuario(tabela, usuario);
         inserirBloom(filtro, usuario);
     }
 
@@ -42,11 +42,11 @@ int main() {
                 printf("Digite o usuario inserido: ");
                 scanf("%s", usuario);
                 if(!consultarBloom(filtro, usuario)) {
-                    inserirUsuario(usuario, tabela);
+                    inserirUsuario(tabela, usuario);
                     inserirBloom(filtro, usuario);
                     fprintf(file, "%s\n", usuario);
-                } else if(!buscarUsuario(usuario, tabela)) {
-                    inserirUsuario(usuario, tabela);
+                } else if(!buscarUsuario(tabela, usuario)) {
+                    inserirUsuario(tabela, usuario);
                     inserirBloom(filtro, usuario);
                     fprintf(file, "%s\n", usuario);
                 } else {
@@ -58,7 +58,7 @@ int main() {
                 scanf("%s", usuario);
                 if(!consultarBloom(filtro, usuario)) {
                     printf("Usiario inexistente\n");
-                } else if(!buscarUsuario(usuario, tabela)) {
+                } else if(!buscarUsuario(tabela, usuario)) {
                     printf("Usiario inexistente\n");
                 } else {
                     printf("Usuario encontrado!\n");
@@ -73,11 +73,11 @@ int main() {
                 file_aux = fopen(aux, "r+");
                 while(fscanf(file, "%s", usuario)) {
                     if(!consultarBloom(filtro, usuario)) {
-                    inserirUsuario(usuario, tabela);
+                    inserirUsuario(tabela, usuario);
                     inserirBloom(filtro, usuario);
                     fprintf(file, "%s\n", usuario);
-                    } else if(!buscarUsuario(usuario, tabela)) {
-                    inserirUsuario(usuario, tabela);
+                    } else if(!buscarUsuario(tabela, usuario)) {
+                    inserirUsuario(tabela, usuario);
                     inserirBloom(filtro, usuario);
                     fprintf(file, "%s\n", usuario);
                     } else {
@@ -89,9 +89,6 @@ int main() {
                 break;
             case 5:
                 fflush(file);
-                fclose(file);
-                liberarBloom(filtro);
-                destruirTabela(tabela);
                 break;
             default: printf("Digite uma opcao valida\n");
         }
@@ -99,6 +96,7 @@ int main() {
 
     fclose(file);
     liberarBloom(filtro);
+    destruirTabela(tabela);
     
     return 0;
 }

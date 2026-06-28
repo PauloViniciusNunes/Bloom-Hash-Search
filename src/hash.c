@@ -48,7 +48,7 @@ User* criarUsuario(char* nome)
     return novo;
 }
 
-void inserirUsuario(char *nome, hashTable *tabela)
+void inserirUsuario(hashTable *tabela, char *nome)
 {
     unsigned int idx = gerarHash(nome);
 
@@ -67,7 +67,7 @@ void inserirUsuario(char *nome, hashTable *tabela)
     tabela->qtd++;
 }
 
-User *buscarUsuario(char *nome, hashTable *tabela)
+User *buscarUsuario( hashTable *tabela, char *nome)
 {
     unsigned int idx = gerarHash(nome);
 
