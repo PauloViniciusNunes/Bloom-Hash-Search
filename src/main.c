@@ -21,8 +21,8 @@ int main() {
     }
     fseek(file, 0, SEEK_SET);
 
-    BloomFilter *filtro = criarBloom(244, 2);
-    Hash tabela;
+    BloomFilter *filtro = criarBloom();
+    hashTable *tabela = criarHash();
     char usuario[20];
     while(fscanf(file, "%s", usuario)) {
         inserirUsuario(usuario, tabela);

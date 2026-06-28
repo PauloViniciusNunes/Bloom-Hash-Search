@@ -24,30 +24,24 @@ unsigned int hash2(char *nome)
     return hash;
 }
 
-unsigned int gerarHash(char *nome, int numeroHash, int tamanho)
+unsigned int gerarHash(char *nome, int numeroHash)
 {
-    return (hash1(nome) + numeroHash * hash2(nome)) % tamanho;
+    return (hash1(nome) + numeroHash * hash2(nome)) % M;
 }
 
-BloomFilter *criarBloom(int tamanho, int quantidadeHashes)
+BloomFilter *criarBloom(void)
 {
-    BloomFilter *novo = (BloomFilter *) malloc(sizeof(BloomFilter));
+    BloomFilter *novo = malloc(sizeof(BloomFilter));
 
     if (novo == NULL)
     {
         return NULL;
     }
 
-    novo->bits = (unsigned char *) calloc((tamanho + 7) / 8, sizeof(unsigned char));
-
-    if (novo->bits == NULL)
+    for (int i = 0; i < (M + 7) / 8; i++)
     {
-        free(novo);
-        return NULL;
+        novo->bits[i] = 0;
     }
-
-    novo->tamanho = tamanho;
-    novo->quantidadeHashes = quantidadeHashes;
 
     novo->totalConsultas = 0;
     novo->consultasIgnoradas = 0;
@@ -58,14 +52,14 @@ BloomFilter *criarBloom(int tamanho, int quantidadeHashes)
 
 void inserirBloom(BloomFilter *bloom, char *nome)
 {
-    for (int i = 0; i < bloom->quantidadeHashes; i++)
+    for (int i = 0; i < K; i++)
     {
-        int posicao = gerarHash(nome, i, bloom->tamanho);
+        unsigned int posicao = gerarHash(nome, i);
 
-        int byte = posicao / 8;
-        int bit = posicao % 8;
+        unsigned int byte = posicao / 8;
+        unsigned int bit = posicao % 8;
 
-        bloom->bits[byte] |= (1 << bit);
+        bloom->bits[byte] |= (1u << bit);
     }
 }
 
@@ -73,14 +67,14 @@ bool consultarBloom(BloomFilter *bloom, char *nome)
 {
     bloom->totalConsultas++;
 
-    for (int i = 0; i < bloom->quantidadeHashes; i++)
+    for (int i = 0; i < K; i++)
     {
-        int posicao = gerarHash(nome, i, bloom->tamanho);
+        unsigned int posicao = gerarHash(nome, i);
 
-        int byte = posicao / 8;
-        int bit = posicao % 8;
+        unsigned int byte = posicao / 8;
+        unsigned int bit = posicao % 8;
 
-        if (!(bloom->bits[byte] & (1 << bit)))
+        if ((bloom->bits[byte] & (1u << bit)) == 0)
         {
             bloom->consultasIgnoradas++;
             return false;
@@ -107,6 +101,5 @@ double taxaFalsoPositivo(BloomFilter *bloom)
 
 void liberarBloom(BloomFilter *bloom)
 {
-    free(bloom->bits);
     free(bloom);
 }

@@ -10,6 +10,19 @@ unsigned int gerarHash(char *nome)
     return hash % N;
 }
 
+hashTable *criarHash() {
+    hashTable *novo = malloc(sizeof(hashTable));
+
+    if(novo == NULL) {
+        return NULL;
+    }
+
+    for(int i = 0; i < N; i++) {
+        novo->hash[i] = NULL;
+    }
+    novo->qtd = 0;
+}
+
 char *removerPrefixo(char *str, const char *prefixo)
 {
     size_t tam = strlen(prefixo);
@@ -35,7 +48,7 @@ User* criarUsuario(char* nome)
     return novo;
 }
 
-void inserirUsuario(char *nome, Hash tabela)
+void inserirUsuario(char *nome, hashTable *tabela)
 {
     unsigned int idx = gerarHash(nome);
 
@@ -47,17 +60,18 @@ void inserirUsuario(char *nome, Hash tabela)
         return;
     }
 
-    novo->nextUser = tabela[idx];
-    tabela[idx] = novo;
+    novo->nextUser = tabela->hash[idx];
+    tabela->hash[idx] = novo;
 
     printf("→ Usuario adicionado.\n");
+    tabela->qtd++;
 }
 
-User *buscarUsuario(char *nome, Hash tabela)
+User *buscarUsuario(char *nome, hashTable *tabela)
 {
     unsigned int idx = gerarHash(nome);
 
-    User *consultado = tabela[idx];
+    User *consultado = tabela->hash[idx];
 
     while (consultado != NULL)
     {
@@ -74,11 +88,11 @@ User *buscarUsuario(char *nome, Hash tabela)
     return NULL;
 }
 
-void destruirTabela(Hash tabela)
+void destruirTabela(hashTable *tabela)
 {
     for (int i = 0; i < N; i++)
     {
-        User *p = tabela[i];
+        User *p = tabela->hash[i];
 
         while (p)
         {
@@ -87,6 +101,7 @@ void destruirTabela(Hash tabela)
             free(aux);
         }
     }
+    free(tabela);
 }
 
 void interpretarComando(char* comando, Hash tabela)
@@ -117,41 +132,6 @@ void interpretarComando(char* comando, Hash tabela)
         printf("\n[ERROR] COMANDO DESCONHECIDO.\n\n");
     }
 }
-
-void deletarUsuario(char *nome, Hash tabela)
-{
-    unsigned int idx = gerarHash(nome);
-
-    User *atual = tabela[idx];
-    User *anterior = NULL;
-
-    while (atual != NULL)
-    {
-        if (strcmp(atual->nome, nome) == 0)
-        {
-            /* Remoção do primeiro nó da lista */
-            if (anterior == NULL)
-            {
-                tabela[idx] = atual->nextUser;
-            }
-            /* Remoção de um nó no meio ou no final */
-            else
-            {
-                anterior->nextUser = atual->nextUser;
-            }
-
-            free(atual);
-            printf("→ Usuario deletado.\n");
-            return;
-        }
-
-        anterior = atual;
-        atual = atual->nextUser;
-    }
-
-    printf("→ Usuario não encontrado.\n");
-}
-
 
 // ---- MAIN SECTION ---- //
 int main()

@@ -14,14 +14,18 @@ typedef struct User {
 
 typedef struct User* Hash[ N ];
 
+typedef struct hashTable {
+    Hash hash;
+    int qtd;
+} hashTable;
+
+hashTable* criarHash();
 User* criarUsuario(char* nome);
 unsigned int gerarHash(char* nome);
 void interpretarComando(char * comando, Hash tabela);
-void inserirUsuario(char* nome, Hash tabela);
-User* buscarUsuario(char* nome, Hash tabela);
-void deletarUsuario(char* nome, Hash tabela);
-void encerrarPrograma(Hash tabela);
+void inserirUsuario(char* nome, hashTable *tabela);
+User* buscarUsuario(char* nome, hashTable *tabela);
 char *removerPrefixo(char *str, const char *prefixo);
-void destruirTabela(Hash tabela);
+void destruirTabela(hashTable *tabela);
 
 #endif
