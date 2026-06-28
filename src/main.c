@@ -9,7 +9,7 @@ void menu() {
     printf("[ 1 ] - INSERIR\n");
     printf("[ 2 ] - CONSULTAR\n");
     printf("[ 3 ] - EXIBIR ESTATISTICAS\n");
-    printf("[ 4 ] - INSERRIR EM LOTE\n");
+    printf("[ 4 ] - INSERIR EM LOTE\n");
     printf("[ 5 ] - SAIR\n");
 }
 
@@ -29,7 +29,7 @@ int main() {
     hashTable *tabela = criarHash();
     char usuario[20];
     while(fscanf(file, "%s", usuario)) {
-        inserirUsuario(tabela, usuario);
+        inserirHash(tabela, usuario);
         inserirBloom(filtro, usuario);
     }
 
@@ -42,11 +42,11 @@ int main() {
                 printf("Digite o usuario inserido: ");
                 scanf("%s", usuario);
                 if(!consultarBloom(filtro, usuario)) {
-                    inserirUsuario(tabela, usuario);
+                    inserirHash(tabela, usuario);
                     inserirBloom(filtro, usuario);
                     fprintf(file, "%s\n", usuario);
-                } else if(!buscarUsuario(tabela, usuario)) {
-                    inserirUsuario(tabela, usuario);
+                } else if(!buscarHash(tabela, usuario)) {
+                    inserirHash(tabela, usuario);
                     inserirBloom(filtro, usuario);
                     fprintf(file, "%s\n", usuario);
                 } else {
@@ -58,8 +58,8 @@ int main() {
                 scanf("%s", usuario);
                 if(!consultarBloom(filtro, usuario)) {
                     printf("Usiario inexistente\n");
-                } else if(!buscarUsuario(tabela, usuario)) {
-                    printf("Usiario inexistente\n");
+                } else if(!buscarHash(tabela, usuario)) {
+                    printf("Usuario inexistente\n");
                 } else {
                     printf("Usuario encontrado!\n");
                 }
@@ -73,11 +73,11 @@ int main() {
                 file_aux = fopen(aux, "r+");
                 while(fscanf(file, "%s", usuario)) {
                     if(!consultarBloom(filtro, usuario)) {
-                    inserirUsuario(tabela, usuario);
+                    inserirHash(tabela, usuario);
                     inserirBloom(filtro, usuario);
                     fprintf(file, "%s\n", usuario);
-                    } else if(!buscarUsuario(tabela, usuario)) {
-                    inserirUsuario(tabela, usuario);
+                    } else if(!buscarHash(tabela, usuario)) {
+                    inserirHash(tabela, usuario);
                     inserirBloom(filtro, usuario);
                     fprintf(file, "%s\n", usuario);
                     } else {

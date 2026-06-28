@@ -23,8 +23,8 @@ hashTable* criarHash();
 User* criarUsuario(char* nome);
 unsigned int gerarHash(char* nome);
 void interpretarComando(char * comando, Hash tabela);
-void inserirUsuario(hashTable *tabela, char* nome);
-User* buscarUsuario(hashTable *tabela, char* nome);
+void inserirHash(hashTable *tabela, char* nome);
+User* buscarHash(hashTable *tabela, char* nome);
 char *removerPrefixo(char *str, const char *prefixo);
 void destruirTabela(hashTable *tabela);
 
