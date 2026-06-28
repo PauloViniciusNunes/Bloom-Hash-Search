@@ -1,42 +1,9 @@
-# ==============================
-# CONFIGURACOES DO COMPILADOR
-# ==============================
-
-CC = gcc
-
-CFLAGS = -Wall -Wextra -Iinclude
-
-# ==============================
-# DIRETORIOS
-# ==============================
-
-SRC_DIR = src
-TEST_DIR = tests
-
-# ==============================
-# ARQUIVOS PRINCIPAIS
-# ==============================
-
-SRC = $(SRC_DIR)/main.c \
-      $(SRC_DIR)/hash.c \
-	  $(SRC_DIR)/bloom.c \
-
-# ==============================
-# EXECUTAVEL PRINCIPAL
-# ==============================
-
-TARGET = hash
-
-# ==============================
-# COMPILACAO PRINCIPAL
-# ==============================
+SRC = $(SRC_DIR)/main.c $(SRC_DIR)/hash.c $(SRC_DIR)/bloom.c
+TEST_SRC = testes/teste_perf.c testes/benchmark.c $(SRC_DIR)/hash.c $(SRC_DIR)/bloom.c
 
 all:
-	$(CC) $(SRC) $(CFLAGS) -o $(TARGET)
+	gcc $(SRC) -Wall -Wextra -Iincludes -o hash
 
-# ==============================
-# EXECUTAR O PROGRAMA
-# ==============================
-
-run: all
-	./$(TARGET)
+test:
+	@mkdir -p testes/resultados
+	gcc $(TEST_SRC) -Wall -Wextra -Iincludes -o benchmark_test
