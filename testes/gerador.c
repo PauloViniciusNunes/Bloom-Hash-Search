@@ -1,7 +1,19 @@
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 #include <stdlib.h>
 
+
+int buscarRegistro(const char *arq, const char *user) {
+    FILE *file = fopen(arq, "r");
+    char arq_usuario[12];
+    while(fscanf(file, "%s", arq_usuario)) {
+        if(strcmp(user, arq_usuario) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 void gerarArquivo(const char *arq, int num_reg) {
     FILE *file = fopen(arq, "w");
     if(!file) {
@@ -19,7 +31,12 @@ void gerarArquivo(const char *arq, int num_reg) {
             usuario[j] = '0' + rand()%10;
         }
         fprintf(file, "%s\n", usuario);
+
+        if(buscaRegistro(arq, usuario)) {
+            i--;
+            continue;
         }
+    }
     fclose(file);
 }
 
