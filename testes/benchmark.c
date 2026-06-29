@@ -119,7 +119,7 @@ void processarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilt
     fprintf(result, "%f\n", fp); // Grava a taxa real de falsos positivos capturada
 
     printf("Numero de colisoes na hash: %ld\n", tabela->colisoes);
-    printf("taxa de ocupacao: %.2f %%\n", (float)(100*tabela->ocupacao)/tabela->qtd);
+    printf("taxa de ocupacao: %.2f %%\n", (float)(100*tabela->ocupacao)/N);
 
     fclose(result);
     destruirTabela(tabela);

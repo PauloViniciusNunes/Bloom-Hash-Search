@@ -33,3 +33,14 @@ void buscarUsuario(BloomFilter *filtro, hashTable *tabela, const char* usuario) 
         printf("Usuario encontrado com sucesso!\n");
     }
 }
+
+double tempomedio_busca(FILE *file, hashTable *tabela) {
+    clock_t t;
+    char usuario[20];
+    t = clock();
+    while(fscanf(file, "%s", usuario) != EOF) {
+        buscarHash(tabela, usuario);
+    }
+    t = clock()-t;
+    return (((double)t)/CLOCKS_PER_SEC)/tabela->qtd;
+}

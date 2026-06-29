@@ -46,7 +46,8 @@ int main() {
                 printf("Total de consultas realizadas: %ld\n", filtro->totalConsultas);
                 printf("Consultas barradas direto no Bloom: %ld\n", filtro->consultasIgnoradas);
                 printf("Falsos positivos encontrados: %ld\n", filtro->falsosPositivos);
-                printf("Taxa de Falsos Positivos: %.2f%%\n\n", taxaFalsoPositivo(filtro));
+                printf("Taxa de Falsos Positivos: %.2f%%\n", taxaFalsoPositivo(filtro));
+                printf("Tempo medio consulta: %lf\n\n", tempomedio_busca(file, tabela));
                 break;
             case 4:
                 printf("Digite o nome do arquivo (ex: novos.txt): ");
