@@ -57,8 +57,7 @@ Bloom-Hash-Search
 ├── .gitignore
 ├── Makefile
 ├── README.md
-├── Relatorio.pdf
-└── teste_hash
+└── Relatorio.pdf
 ```
 
 ---
