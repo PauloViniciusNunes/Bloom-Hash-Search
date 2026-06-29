@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define M 959000                  // Número de bits do Bloom Filter
-#define K 2                       // Número de funções hash
+#define M 958512                  // Número de bits do Bloom Filter
+#define K 7                       // Número de funções hash
 
 typedef unsigned char bloomfilter[(M + 7) / 8];
 
