@@ -72,6 +72,14 @@ void processarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilt
     cpu_time_used = ((double) t) / CLOCKS_PER_SEC;
     fprintf(result, "%f;", cpu_time_used);
 
+    fseek(file, 0, SEEK_SET);
+
+    while(fscanf(file, "%s", usuario) != EOF) { // CORREÇÃO: Loop infinito resolvido com EOF
+        if(consultarBloom(filtro, usuario)&&(!buscarHash(tabela, usuario))) {
+            registrarFalsoPositivo(filtro);
+        }
+    }
+
     fclose(file);
 
     fp = taxaFalsoPositivo(filtro);

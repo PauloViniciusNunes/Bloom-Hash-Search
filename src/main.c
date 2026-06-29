@@ -41,7 +41,8 @@ int main() {
                 buscarUsuario(filtro, tabela, usuario);
                 break;
             case 3:
-                printf("\n--- ESTATÍSTICAS DO FILTRO DE BLOOM ---\n");
+                printf("\n--- ESTATÍSTICAS ---\n");
+                printf("Total de elementos armazenados na tabela Hash: %ld\n", tabela->qtd);
                 printf("Total de consultas realizadas: %ld\n", filtro->totalConsultas);
                 printf("Consultas barradas direto no Bloom: %ld\n", filtro->consultasIgnoradas);
                 printf("Falsos positivos encontrados: %ld\n", filtro->falsosPositivos);
