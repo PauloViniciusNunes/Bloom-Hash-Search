@@ -1,24 +1,13 @@
-#include <stdio.h>
-#include "../includes/bloom.h"
-#include "../includes/hash.h"
-
-void menu() {
-    printf("=================================================\n");
-    printf("Sistema de Verificação de Cadastro de Usuários\n");
-    printf("=================================================\n");
-    printf("[ 1 ] - INSERIR\n");
-    printf("[ 2 ] - CONSULTAR\n");
-    printf("[ 3 ] - EXIBIR ESTATISTICAS\n");
-    printf("[ 4 ] - INSERIR EM LOTE\n");
-    printf("[ 5 ] - SAIR\n");
-}
+#include "bloom.h"
+#include "hash.h"
+#include "usuario.h"
 
 int main() {
-    FILE *file_aux;
+    FILE *file2;
     char arq[20];
-    char aux[40] = "./data/";
+    char path[50] = "../data/";
 
-    FILE *file = fopen("./data/usuarios.txt", "a+");
+    FILE *file = fopen("../data/usuarios.txt", "a+");
     if(!file) {
         printf("nao foi possivel abrir o arquivo base de usuarios\n");
         return -1;
@@ -38,33 +27,18 @@ int main() {
     int op;
     do {
         menu();
-        if (scanf("%d", &op) != 1) break;
+        scanf("%d", &op);
         
         switch(op) {
             case 1:
                 printf("Digite o usuario inserido: ");
                 scanf("%s", usuario);
-                if(!consultarBloom(filtro, usuario) || !buscarHash(tabela, usuario)) {
-                    inserirHash(tabela, usuario);
-                    inserirBloom(filtro, usuario);
-                    fprintf(file, "%s\n", usuario);
-                    printf("Usuario cadastrado com sucesso!\n");
-                } else {
-                    printf("Usuario ja cadastrado!\n");
-                }
+                inserirUsuario(file, filtro, tabela, usuario);
                 break;
             case 2:
                 printf("Digite o usuario pesquisado: ");
                 scanf("%s", usuario);
-                // Lógica de proteção do Bloom Filter agindo antes da Hash
-                if(!consultarBloom(filtro, usuario)) {
-                    printf("Usuario inexistente (Negado pelo Bloom Filter)\n");
-                } else if(!buscarHash(tabela, usuario)) {
-                    registrarFalsoPositivo(filtro); // Registra que o bloom errou
-                    printf("Usuario inexistente (Falso Positivo detectado na Hash)\n");
-                } else {
-                    printf("Usuario encontrado com sucesso!\n");
-                }
+                buscarUsuario(filtro, tabela, usuario);
                 break;
             case 3:
                 printf("\n--- ESTATÍSTICAS DO FILTRO DE BLOOM ---\n");
@@ -76,22 +50,18 @@ int main() {
             case 4:
                 printf("Digite o nome do arquivo (ex: novos.txt): ");
                 scanf("%s", arq);
-                strcat(aux, arq);
-                file_aux = fopen(aux, "r");
-                if(!file_aux) {
+                strcat(path, arq);
+                file2 = fopen(path, "r");
+                if(!file2) {
                     printf("Erro ao abrir arquivo em lote.\n");
-                    strcpy(aux, "./data/");
+                    strcpy(path, "./data/");
                     break;
                 }
-                while(fscanf(file_aux, "%s", usuario) != EOF) { // CORREÇÃO: loop corrigido
-                    if(!consultarBloom(filtro, usuario) || !buscarHash(tabela, usuario)) {
-                        inserirHash(tabela, usuario);
-                        inserirBloom(filtro, usuario);
-                        fprintf(file, "%s\n", usuario);
-                    }
+                while(fscanf(file2, "%s", usuario) != EOF) { // CORREÇÃO: loop corrigido
+                    inserirUsuario(file, filtro, tabela, usuario);
                 }
-                fclose(file_aux);
-                strcpy(aux, "./data/");
+                fclose(file2);
+                strcpy(path, "./data/");
                 printf("Lote processado com sucesso.\n");
                 break;
             case 5:

@@ -11,6 +11,7 @@ TEST_DIR = testes
 # Arquivos da aplicação principal
 SRC = \
 	$(SRC_DIR)/main.c \
+	$(SRC_DIR)/usuario.c \
 	$(SRC_DIR)/hash.c \
 	$(SRC_DIR)/bloom.c
 

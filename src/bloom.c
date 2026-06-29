@@ -1,4 +1,4 @@
-#include "../includes/bloom.h"
+#include "bloom.h"
 
 unsigned int hash1(char *nome)
 {

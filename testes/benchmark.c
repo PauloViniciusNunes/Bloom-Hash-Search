@@ -1,4 +1,4 @@
-#include "../includes/benchmark.h"
+#include "benchmark.h"
 
 void gerarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilter *filtro) {
     FILE *file = fopen(arq, "w");

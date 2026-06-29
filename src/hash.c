@@ -1,4 +1,4 @@
-#include "../includes/hash.h"
+#include "hash.h"
 
 unsigned int gerarHash(char *nome)
 {
