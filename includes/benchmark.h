@@ -10,7 +10,9 @@
 #include "bloom.h"
 
 // CORREÇÃO: Alterado de bloomfilter* para BloomFilter*
-void gerarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilter *filtro);
+void inicializar(int n, hashTable **t[], BloomFilter **f[]);
+void gerarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilter *filtro, int mode);
+void lerArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilter *filtro);
 void processarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilter *filtro);
 
 #endif

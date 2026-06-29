@@ -1,11 +1,19 @@
 #include "benchmark.h"
 
-void gerarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilter *filtro) {
+void inicializar(int n, hashTable **t[], BloomFilter **f[]) {
+    for (int i = 0; i < n; i++) {
+        *t[i] = criarHash();
+        *f[i] = criarBloom();
+    }
+}
+
+void gerarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilter *filtro, int mode) {
     FILE *file = fopen(arq, "w");
     if(!file) {
         printf("Nao foi possivel gerar o arquivo!\n");
         return;
     }
+
 
     char usuario[12];
     int i, j;
@@ -30,6 +38,31 @@ void gerarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilter *
             i--;
             continue;
         }
+    }
+    fclose(file);
+
+    if(mode == 0) {
+        destruirTabela(tabela);
+        liberarBloom(filtro);
+    }
+}
+
+void lerArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilter *filtro) {
+    FILE *file = fopen(arq, "r");
+    if(!file) {
+        printf("Nao foi possivel abrir o arquivo!\n");
+        return;
+    }
+
+    tabela = criarHash();
+    filtro = criarBloom();
+
+    char usuario[12];
+    int i;
+    for(i = 0; i < num_reg; i++) {
+        fscanf(file, "%s", usuario);
+        inserirHash(tabela, usuario);
+        inserirBloom(filtro, usuario);
     }
     fclose(file);
 }
