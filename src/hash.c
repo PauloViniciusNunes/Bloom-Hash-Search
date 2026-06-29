@@ -1,6 +1,6 @@
 #include "hash.h"
 
-unsigned int gerarHash(char *nome)
+unsigned int Hash(const char *nome)
 {
     unsigned int hash = 5381;
     while (*nome)
@@ -28,7 +28,7 @@ char *removerPrefixo(char *str, const char *prefixo)
     return str;
 }
 
-User* criarUsuario(char* nome)
+User* criarUsuario(const char* nome)
 {
     User* novo = (User*)malloc(sizeof(User));
     if(!novo) return NULL;
@@ -39,9 +39,9 @@ User* criarUsuario(char* nome)
     return novo;
 }
 
-void inserirHash(hashTable *tabela, char *nome)
+void inserirHash(hashTable *tabela, const char *nome)
 {
-    unsigned int idx = gerarHash(nome);
+    unsigned int idx = Hash(nome);
     User *novo = criarUsuario(nome);
 
     if (novo == NULL) {
@@ -54,9 +54,9 @@ void inserirHash(hashTable *tabela, char *nome)
     tabela->qtd++;
 }
 
-User *buscarHash(hashTable *tabela, char *nome)
+User *buscarHash(hashTable *tabela, const char *nome)
 {
-    unsigned int idx = gerarHash(nome);
+    unsigned int idx = Hash(nome);
     User *consultado = tabela->hash[idx];
 
     while (consultado != NULL) {

@@ -2,7 +2,7 @@
 
 void menu() {
     printf("=================================================\n");
-    printf("Sistema de Verificação de Cadastro de Usuários\n");
+    printf("Sistema de Verificacao de Cadastro de Usuarios\n");
     printf("=================================================\n");
     printf("[ 1 ] - INSERIR\n");
     printf("[ 2 ] - CONSULTAR\n");

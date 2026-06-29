@@ -5,9 +5,9 @@
 int main() {
     FILE *file2;
     char arq[20];
-    char path[50] = "../data/";
+    char path[50] = "./data/";
 
-    FILE *file = fopen("../data/usuarios.txt", "a+");
+    FILE *file = fopen("./data/usuarios.txt", "a+");
     if(!file) {
         printf("nao foi possivel abrir o arquivo base de usuarios\n");
         return -1;

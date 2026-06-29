@@ -19,11 +19,11 @@ typedef struct hashTable {
 } hashTable;
 
 hashTable* criarHash(void);
-User* criarUsuario(char* nome);
-unsigned int gerarHash(char* nome);
+User* criarUsuario(const char* nome);
+unsigned int Hash(const char* nome);
 void interpretarComando(char *comando, hashTable *tabela);
-void inserirHash(hashTable *tabela, char* nome);
-User* buscarHash(hashTable *tabela, char* nome);
+void inserirHash(hashTable *tabela, const char* nome);
+User* buscarHash(hashTable *tabela, const char* nome);
 char *removerPrefixo(char *str, const char *prefixo);
 void destruirTabela(hashTable *tabela);
 

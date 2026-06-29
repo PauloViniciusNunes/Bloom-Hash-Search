@@ -1,6 +1,6 @@
 #include "bloom.h"
 
-unsigned int hash1(char *nome)
+unsigned int hash1(const char *nome)
 {
     unsigned int hash = 5381;
 
@@ -12,7 +12,7 @@ unsigned int hash1(char *nome)
     return hash;
 }
 
-unsigned int hash2(char *nome)
+unsigned int hash2(const char *nome)
 {
     unsigned int hash = 0;
 
@@ -24,7 +24,7 @@ unsigned int hash2(char *nome)
     return hash;
 }
 
-unsigned int gerarHash(char *nome, int numeroHash)
+unsigned int gerarHash(const char *nome, int numeroHash)
 {
     return (hash1(nome) + numeroHash * hash2(nome)) % M;
 }
@@ -50,7 +50,7 @@ BloomFilter *criarBloom(void)
     return novo;
 }
 
-void inserirBloom(BloomFilter *bloom, char *nome)
+void inserirBloom(BloomFilter *bloom, const char *nome)
 {
     for (int i = 0; i < K; i++)
     {
@@ -63,7 +63,7 @@ void inserirBloom(BloomFilter *bloom, char *nome)
     }
 }
 
-bool consultarBloom(BloomFilter *bloom, char *nome)
+bool consultarBloom(BloomFilter *bloom, const char *nome)
 {
     bloom->totalConsultas++;
 

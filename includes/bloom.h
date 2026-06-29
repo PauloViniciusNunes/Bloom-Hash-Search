@@ -22,19 +22,19 @@ typedef struct BloomFilter
 
 
 /* Funções Hash */
-unsigned int hash1(char *nome);
+unsigned int hash1(const char *nome);
 
-unsigned int hash2(char *nome);
+unsigned int hash2(const char *nome);
 
-unsigned int gerarHash(char *nome, int numeroHash);
+unsigned int gerarHash(const char *nome, int numeroHash);
 
 
 /* Bloom Filter */
 BloomFilter *criarBloom(void);
 
-void inserirBloom(BloomFilter *bloom, char *nome);
+void inserirBloom(BloomFilter *bloom, const char *nome);
 
-bool consultarBloom(BloomFilter *bloom, char *nome);
+bool consultarBloom(BloomFilter *bloom, const char *nome);
 
 void registrarFalsoPositivo(BloomFilter *bloom);
 
