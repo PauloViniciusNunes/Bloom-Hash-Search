@@ -17,6 +17,8 @@ hashTable *criarHash(void) {
         novo->hash[i] = NULL;
     }
     novo->qtd = 0;
+    novo->colisoes = 0;
+    novo->ocupacao = 0;
     return novo; // CORREÇÃO: Adicionado retorno da tabela
 }
 
@@ -47,6 +49,12 @@ void inserirHash(hashTable *tabela, const char *nome)
     if (novo == NULL) {
         printf("\n[ERRO] Falha na alocação.\n\n");
         return;
+    }
+
+    if(tabela->hash[idx] == NULL) {
+        tabela->ocupacao++;
+    } else {
+        tabela->colisoes++;
     }
 
     novo->nextUser = tabela->hash[idx];

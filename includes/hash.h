@@ -16,6 +16,8 @@ typedef struct User {
 typedef struct hashTable {
     User* hash[N];
     long qtd;
+    long colisoes;
+    long ocupacao;
 } hashTable;
 
 hashTable* criarHash(void);
