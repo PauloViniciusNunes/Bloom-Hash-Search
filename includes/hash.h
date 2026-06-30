@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-#define N 200003
+#define N 133337
 
 typedef struct User {
     char nome[81];

@@ -54,9 +54,6 @@ void lerArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilter *fi
         return;
     }
 
-    tabela = criarHash();
-    filtro = criarBloom();
-
     char usuario[12];
     int i;
     for(i = 0; i < num_reg; i++) {
@@ -118,6 +115,7 @@ void processarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilt
     fp = taxaFalsoPositivo(filtro);
     fprintf(result, "%f\n", fp); // Grava a taxa real de falsos positivos capturada
 
+    printf("----%d registros----\n", num_reg);
     printf("Numero de colisoes na hash: %ld\n", tabela->colisoes);
     printf("taxa de ocupacao: %.2f %%\n", (float)(100*tabela->ocupacao)/N);
 

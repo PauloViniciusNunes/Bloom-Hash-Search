@@ -33,19 +33,19 @@ int main(int argc, char *argv[]) {
         inicializar(3, t, f);
         gerarArquivo("registros1000_busca.txt", 1000, t1, f1, 0);
         gerarArquivo("registros10000_busca.txt", 10000, t2, f2, 0);
-        gerarArquivo("registros100000_busca.txt", 10000, t3, f3, 0);
+        gerarArquivo("registros100000_busca.txt", 100000, t3, f3, 0);
     }
 
     if(y == 1) {
         inicializar(3, t, f);
         gerarArquivo("registros1000.txt", 1000, t1, f1, 1);
         gerarArquivo("registros10000.txt", 10000, t2, f2, 1);
-        gerarArquivo("registros100000.txt", 10000, t3, f3, 1);
+        gerarArquivo("registros100000.txt", 100000, t3, f3, 1);
     } else {
         inicializar(3, t, f);
         lerArquivo("registros1000.txt", 1000, t1, f1);
         lerArquivo("registros10000.txt", 10000, t2, f2);
-        lerArquivo("registros100000.txt", 10000, t3, f3);
+        lerArquivo("registros100000.txt", 100000, t3, f3);
     }
 
     if(z == 1) {
