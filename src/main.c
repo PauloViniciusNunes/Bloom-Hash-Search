@@ -3,23 +3,23 @@
 #include "usuario.h"
 
 int main() {
-    FILE *file2;
-    char arq[20];
-    char path[50] = "./data/";
+    FILE *file2; //Arquivo auxiliar para inserção em lote
+    char arq[20]; //Nome do arquivo auxiliar
+    char path[50] = "./data/"; //caminho do arquivo auxiliar
 
     FILE *file = fopen("./data/usuarios.txt", "a+");
     if(!file) {
         printf("nao foi possivel abrir o arquivo base de usuarios\n");
         return -1;
     }
-    fseek(file, 0, SEEK_SET);
+    fseek(file, 0, SEEK_SET); //Ponteiro aponta para o inicio do arquivo
 
     BloomFilter *filtro = criarBloom();
     hashTable *tabela = criarHash();
     char usuario[20];
 
     // Carrega os dados existentes salvos no arquivo base
-    while(fscanf(file, "%s", usuario) != EOF) { // CORREÇÃO: Evita travamento no boot
+    while(fscanf(file, "%s", usuario) != EOF) {
         inserirHash(tabela, usuario);
         inserirBloom(filtro, usuario);
     }
@@ -59,7 +59,7 @@ int main() {
                     strcpy(path, "./data/");
                     break;
                 }
-                while(fscanf(file2, "%s", usuario) != EOF) { // CORREÇÃO: loop corrigido
+                while(fscanf(file2, "%s", usuario) != EOF) {
                     inserirUsuario(file, filtro, tabela, usuario);
                 }
                 fclose(file2);
@@ -67,7 +67,7 @@ int main() {
                 printf("Lote processado com sucesso.\n");
                 break;
             case 5:
-                fflush(file);
+                fflush(file); //Carrega o restante do conteudo que ainda esta no buffer diretamente no arquivo (usuarios.txt)
                 break;
             default: printf("Digite uma opcao valida\n");
         }

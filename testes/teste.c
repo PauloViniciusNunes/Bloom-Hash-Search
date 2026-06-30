@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
-#include "../includes/hash.h"
-#include "../includes/bloom.h"
-#include "../includes/benchmark.h"
+#include "benchmark.h"
 
 int main(int argc, char *argv[]) {
     srand(time(NULL));

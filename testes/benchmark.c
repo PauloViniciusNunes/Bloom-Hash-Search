@@ -71,7 +71,7 @@ void processarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilt
     if(!file || !result) {
         printf("Nao foi possivel processar o arquivo!\n");
         if(file) fclose(file);
-        return; // CORREÇÃO: Removido o "-1" de uma função void
+        return;
     }
 
     clock_t t;
@@ -82,7 +82,7 @@ void processarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilt
 
     // Teste 1: Busca pura na Hash
     t = clock();
-    while(fscanf(file, "%s", usuario) != EOF) { // CORREÇÃO: Loop infinito resolvido com EOF
+    while(fscanf(file, "%s", usuario) != EOF) {
         buscarHash(tabela, usuario);
     }
     t = clock() - t;
@@ -104,7 +104,7 @@ void processarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilt
 
     fseek(file, 0, SEEK_SET);
 
-    while(fscanf(file, "%s", usuario) != EOF) { // CORREÇÃO: Loop infinito resolvido com EOF
+    while(fscanf(file, "%s", usuario) != EOF) {
         if(consultarBloom(filtro, usuario)&&(!buscarHash(tabela, usuario))) {
             registrarFalsoPositivo(filtro);
         }
@@ -113,11 +113,12 @@ void processarArquivo(const char *arq, int num_reg, hashTable *tabela, BloomFilt
     fclose(file);
 
     fp = taxaFalsoPositivo(filtro);
-    fprintf(result, "%f\n", fp); // Grava a taxa real de falsos positivos capturada
+    fprintf(result, "%lf\n", fp); // Grava a taxa real de falsos positivos capturada
 
     printf("----%d registros----\n", num_reg);
     printf("Numero de colisoes na hash: %ld\n", tabela->colisoes);
     printf("taxa de ocupacao: %.2f %%\n", (float)(100*tabela->ocupacao)/N);
+    printf("Numero de falsos positivos: %d\n", filtro->falsosPositivos);
 
     fclose(result);
     destruirTabela(tabela);
