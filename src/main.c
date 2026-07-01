@@ -41,12 +41,13 @@ int main() {
                 buscarUsuario(filtro, tabela, usuario);
                 break;
             case 3:
-                printf("\n--- ESTATÍSTICAS ---\n");
+                printf("\n--- ESTATISTICAS ---\n");
                 printf("Total de elementos armazenados na tabela Hash: %ld\n", tabela->qtd);
                 printf("Total de consultas realizadas: %ld\n", filtro->totalConsultas);
                 printf("Consultas barradas direto no Bloom: %ld\n", filtro->consultasIgnoradas);
                 printf("Falsos positivos encontrados: %ld\n", filtro->falsosPositivos);
                 printf("Taxa de Falsos Positivos: %.2f%%\n", taxaFalsoPositivo(filtro));
+                printf("Tempo medio consulta: %lf\n\n", tempomedio_busca(file, tabela));
                 break;
             case 4:
                 printf("Digite o nome do arquivo (ex: novos.txt): ");
@@ -66,10 +67,10 @@ int main() {
                 printf("Lote processado com sucesso.\n");
                 break;
             case 5:
-                fflush(file); //Carrega o restante do conteudo que ainda esta no buffer diretamente no arquivo (usuarios.txt)
                 break;
             default: printf("Digite uma opcao valida\n");
         }
+        fflush(file); //Carrega o restante do conteudo que ainda esta no buffer diretamente no arquivo (usuarios.txt)
     } while(op != 5);
 
     fclose(file);

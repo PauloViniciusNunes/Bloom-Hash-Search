@@ -42,6 +42,5 @@ double tempomedio_busca(FILE *file, hashTable *tabela) {
         buscarHash(tabela, usuario);
     }
     t = clock()-t;
-    printf("%ld", t);
     return (((double)t)/CLOCKS_PER_SEC)/tabela->qtd;
 }

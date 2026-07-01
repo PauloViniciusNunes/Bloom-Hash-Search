@@ -19,7 +19,7 @@ hashTable *criarHash(void) {
     novo->qtd = 0;
     novo->colisoes = 0;
     novo->ocupacao = 0;
-    return novo; // CORREÇÃO: Adicionado retorno da tabela
+    return novo;
 }
 
 char *removerPrefixo(char *str, const char *prefixo)
